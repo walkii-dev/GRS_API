@@ -11,6 +11,8 @@ public class Reserva {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // atributos basicos para ligar um usuario a uma sala. para acessar uma sala um usuario precisa fazer uma reserva.
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Usuario usuario;
 
