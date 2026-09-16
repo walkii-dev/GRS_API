@@ -26,6 +26,15 @@ public class Reserva {
     private StatusReserva status;
 
     public Reserva(Usuario usuario, Sala sala, LocalDateTime inicio, LocalDateTime fim){
+
+        if (sala.getStatus().equals(StatusSala.INATIVA)){
+            throw new IllegalArgumentException("não pode reservar uma sala inativa!");
+        }
+
+        if (fim.isBefore(inicio)){
+            throw new IllegalArgumentException("data final não pode ser anterior ao início!");
+        }
+
         this.usuario = usuario;
         this.sala = sala;
         this.inicio = inicio;
