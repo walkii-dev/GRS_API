@@ -11,6 +11,8 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    //esta classe tem somente dois atributos simples para mostrar o usuario e email para ter identificacao unica
+
     @NotBlank(message = "nome do usuario nao pode estar em branco")
     private String nome;
 
