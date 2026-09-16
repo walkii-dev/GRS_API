@@ -15,8 +15,24 @@ public class Sala {
     @Positive(message = "capacidade nao pode ser negativa")
     private int capacidade;
 
+    @Enumerated(EnumType.STRING)
+    private StatusSala status;
+
     public Sala(int capacidade){
         this.capacidade = capacidade;
+        this.status = StatusSala.ATIVA;
+    }
+
+    public void desativarSala(){
+        this.status = StatusSala.INATIVA;
+    }
+
+    public void alteraCapacidadeSala(int novaCapacidade){
+        this.capacidade = novaCapacidade;
+    }
+
+    public StatusSala getStatus() {
+        return status;
     }
 
     public Long getId() {
