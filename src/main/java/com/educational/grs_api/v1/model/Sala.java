@@ -11,6 +11,8 @@ public class Sala {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // inicialmente é o suficiente para que uma entidade opere, ter sua disponibilidade e quantidade para validação
+
     @NotNull
     @Positive(message = "capacidade nao pode ser negativa")
     private int capacidade;
