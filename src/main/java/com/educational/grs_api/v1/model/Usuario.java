@@ -7,15 +7,16 @@ import jakarta.validation.constraints.NotBlank;
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
+    // identificação geral de objeto no banco de dados.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //esta classe tem somente dois atributos simples para mostrar o usuario e email para ter identificacao unica
-
+    // campo que pode servir como visual numa possivel lista de usuários, por exemplo.
     @NotBlank(message = "nome do usuario nao pode estar em branco")
     private String nome;
 
+    // possivel verificador unico de um objeto.
     @Email(message = "email precisa ser valido")
     private String email;
 
