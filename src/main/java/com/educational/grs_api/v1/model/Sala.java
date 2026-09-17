@@ -7,16 +7,18 @@ import jakarta.validation.constraints.Positive;
 @Entity
 @Table(name = "salas")
 public class Sala {
+    // identificação de objeto no banco de dados.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // inicialmente é o suficiente para que uma entidade opere, ter sua disponibilidade e quantidade para validação
-
+    // campo de validação de quantidade de pessoas que utilizarão a sala. pode ser uma regra de não-criação
+    //(caso a solicitação de pessoas na sala seja maior)
     @NotNull
     @Positive(message = "capacidade nao pode ser negativa")
     private int capacidade;
 
+    //validação de estado do objeto. pode servir para uso.
     @Enumerated(EnumType.STRING)
     private StatusSala status;
 
