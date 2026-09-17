@@ -3,37 +3,43 @@ package com.educational.grs_api.v1.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.time.Period;
 
 @Entity
 @Table(name = "reservas")
 public class Reserva {
+
+    //identificador geral da entidade, vai ajudar muito nas consultas ao banco de dados
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // atributos basicos para ligar um usuario a uma sala. para acessar uma sala um usuario precisa fazer uma reserva.
-
+    //requisito essencial da reserva
     @ManyToOne(fetch = FetchType.LAZY)
     private Usuario usuario;
 
+    //requisito essencial da reserva
     @ManyToOne(fetch = FetchType.LAZY)
     private Sala sala;
 
+    //definição de tempo onde a sala será usada pelo usuario.
+    //pode servir de base para análise de conflito (através de Period)
     private LocalDateTime inicio;
     private LocalDateTime fim;
 
+    //lidar com mudança de status de uma reserva, obtendo controle sobre o uso.
     @Enumerated(EnumType.STRING)
     private StatusReserva status;
 
     public Reserva(Usuario usuario, Sala sala, LocalDateTime inicio, LocalDateTime fim){
 
-        if (sala.getStatus().equals(StatusSala.INATIVA)){
-            throw new IllegalArgumentException("não pode reservar uma sala inativa!");
-        }
+        //if (sala.getStatus().equals(StatusSala.INATIVA)){
+        //    throw new IllegalArgumentException("não pode reservar uma sala inativa!");
+        //}
 
-        if (fim.isBefore(inicio)){
-            throw new IllegalArgumentException("data final não pode ser anterior ao início!");
-        }
+        //if (fim.isBefore(inicio)){
+        //    throw new IllegalArgumentException("data final não pode ser anterior ao início!");
+        //}
 
         this.usuario = usuario;
         this.sala = sala;
