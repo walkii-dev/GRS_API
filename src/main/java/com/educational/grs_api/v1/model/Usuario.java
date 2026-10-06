@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
@@ -13,16 +16,12 @@ public class Usuario {
     private Long id;
 
     // campo que pode servir como visual numa possivel lista de usuários, por exemplo.
-    @NotBlank(message = "nome do usuario nao pode estar em branco")
-    private String nome;
+    @NotBlank(message = "apelido do usuario nao pode estar em branco")
+    @Column(unique = true)
+    private String apelido;
 
-    // possivel verificador unico de um objeto.
-    @Email(message = "email precisa ser valido")
-    private String email;
-
-    public Usuario(String nome, String email){
-        this.nome = nome;
-        this.email = email;
+    public Usuario(String apelido){
+        this.apelido = apelido;
     }
     public Usuario(){}
 
@@ -30,11 +29,7 @@ public class Usuario {
         return id;
     }
 
-    public String getNome() {
-        return nome;
-    }
+    public String getApelido(){ return apelido;}
 
-    public String getEmail() {
-        return email;
-    }
+
 }

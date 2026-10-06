@@ -1,6 +1,7 @@
 package com.educational.grs_api.v1.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 import java.time.Period;
@@ -16,10 +17,12 @@ public class Reserva {
 
     //requisito essencial da reserva
     @ManyToOne(fetch = FetchType.LAZY)
+    @NotNull(message = "toda reserva precisa de um usuário. esta informação não pode ser nula.")
     private Usuario usuario;
 
     //requisito essencial da reserva
     @ManyToOne(fetch = FetchType.LAZY)
+    @NotNull(message = "toda reserva precisa de uma sala. esta informação não pode ser nula.")
     private Sala sala;
 
     //definição de tempo onde a sala será usada pelo usuario.
@@ -33,13 +36,9 @@ public class Reserva {
 
     public Reserva(Usuario usuario, Sala sala, LocalDateTime inicio, LocalDateTime fim){
 
-        //if (sala.getStatus().equals(StatusSala.INATIVA)){
-        //    throw new IllegalArgumentException("não pode reservar uma sala inativa!");
-        //}
-
-        //if (fim.isBefore(inicio)){
-        //    throw new IllegalArgumentException("data final não pode ser anterior ao início!");
-        //}
+        if (fim.isBefore(inicio)){
+            throw new IllegalArgumentException("data final não pode ser anterior ao início!");
+        }
 
         this.usuario = usuario;
         this.sala = sala;

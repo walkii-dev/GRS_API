@@ -1,8 +1,7 @@
 package com.educational.grs_api.v1.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "salas")
@@ -11,6 +10,13 @@ public class Sala {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    //cria um número de identificação para a sala (em String para apenas diferenciar salas)
+    @NotBlank(message = "A Sala precisa de um código de identificação.")
+    @Size(max = 3)
+    @Column(unique = true)
+    private String codigo;
+
 
     // campo de validação de quantidade de pessoas que utilizarão a sala. pode ser uma regra de não-criação
     //(caso a solicitação de pessoas na sala seja maior)
@@ -22,7 +28,15 @@ public class Sala {
     @Enumerated(EnumType.STRING)
     private StatusSala status;
 
-    public Sala(int capacidade){
+    public Sala(String codigo, int capacidade){
+
+        if (capacidade < 1){
+            throw new IllegalArgumentException("a sala deve ter uma capacidade positiva válida.");
+        }
+
+        // fazer validação de criação de sala
+
+        this.codigo = codigo;
         this.capacidade = capacidade;
         this.status = StatusSala.ATIVA;
     }
@@ -44,6 +58,8 @@ public class Sala {
     public Long getId() {
         return id;
     }
+
+    public String getCodigo(){return codigo;}
 
     public int getCapacidade() {
         return capacidade;
