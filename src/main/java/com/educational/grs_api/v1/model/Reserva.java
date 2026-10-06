@@ -48,6 +48,8 @@ public class Reserva {
         this.status = StatusReserva.ATIVA;
     }
 
+    public Reserva(){}
+
     public Long getId() {
         return id;
     }

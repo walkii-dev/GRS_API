@@ -27,6 +27,8 @@ public class Sala {
         this.status = StatusSala.ATIVA;
     }
 
+    public Sala(){}
+
     public void desativarSala(){
         this.status = StatusSala.INATIVA;
     }
