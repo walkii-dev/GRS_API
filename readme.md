@@ -89,34 +89,39 @@ Abaixo estão as principais rotas configuradas para os CRUDs (exemplo com uma en
 
 # 📋 Documentação de Exemplos Limite (Boundary Values)
 
-**Caso de Uso:** Cadastro de Idade para Validação de Maioridade Simples  
-**Regra de Negócio:** O sistema só deve permitir o cadastro de usuários que tenham entre **18 e 120 anos** (inclusive).
+**Caso de Uso:** Verificação de Sobreposição de Reserva  
+**Regra de Negócio:** O sistema só deve permitir uma reserva nova ser adicionada caso ela não esteja sobrepondo 
+(ou 'invadindo') o horário de uma outra, seja a nova sobrepondo no início ou o final da anterior.
 
 ### 🔍 Mapeamento das Fronteiras
-*   **Limite Mínimo (Mín):** 18
-*   **Limite Máximo (Máx):** 120
+
+Dado uma Reserva qualquer que **já esteja no banco de dados**, que tenha dados **válidos de usuário e sala**
+(existentes no banco de dados) e que esteja **ativa**,
+tendo os horários:
+
+*   **Início da Reserva:** 10:00
+*   **Final da Reserva:** 13:00
 
 ### 🧪 Matriz de Cenários e Casos de Teste
 
-| ID | Cenário de Entrada | Valor Testado | Tipo de Limite | Comportamento Esperado | Status Esperado |
+| ID | Cenário de Entrada | Valor Testado (Início/Fim) | Status Code Esperado | Mensagem esperada | Tipo de Limite |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **01** | Muito abaixo do limite | `0` | Fora do limite inferior | Mensagem de erro: "Idade inválida" | **Reprovado / Bloqueado** |
-| **02** | Imediatamente antes do limite | `17` | Limite inferior externo | Mensagem de erro: "Apenas maiores de 18 anos" | **Reprovado / Bloqueado** |
-| **03** | **Exatamente no limite mínimo** | `18` | **Limite inferior interno** | Cadastro realizado com sucesso | **Aprovado / Permitido** |
-| **04** | Imediatamente após o limite | `19` | Limite inferior interno + 1 | Cadastro realizado com sucesso | **Aprovado / Permitido** |
-| **05** | Valor nominal/médio | `45` | Dentro do escopo válido | Cadastro realizado com sucesso | **Aprovado / Permitido** |
-| **06** | Imediatamente antes do máximo | `119` | Limite superior interno - 1 | Cadastro realizado com sucesso | **Aprovado / Permitido** |
-| **07** | **Exatamente no limite máximo** | `120` | **Limite superior interno** | Cadastro realizado com sucesso | **Aprovado / Permitido** |
-| **08** | Imediatamente além do máximo | `121` | Limite superior externo | Mensagem de erro: "Idade fora do limite" | **Reprovado / Bloqueado** |
-| **09** | Muito acima do limite | `200` | Fora do limite superior | Mensagem de erro: "Idade fora do limite" | **Reprovado / Bloqueado** |
+| **01** | Data de fim antecede a de início | `14:00/10:00` | _400_ | --- | **Reprovada / Bloqueada** |
+| **02** | Antecedendo com tempo o horário anterior | `07:00/09:00` | _201_ | --- | **Aprovada / Permitida** |
+| **03** | **Antecedendo integralmente o horário anterior** | `08:00/10:00` | _**201**_ | --- | **Aprovada / Permitida** |
+| **04** | Sobrepondo o início do horário anterior | `09:00/11:00` | _409_ | --- | **Reprovada / Bloqueada** |
+| **05** | Dentro do intervalo do horário anterior | `11:00/12:00` | _409_ | --- | **Reprovada / Bloqueada** |
+| **06** | Sobrepondo completamente o horário anterior | `10:00/13:00` | _409_ | --- | **Reprovada / Bloqueada** |
+| **07** | Sobrepondo o final do horário anterior | `12:00/14:00` | _409_ | --- | **Reprovada / Bloqueada** |
+| **08** | **Sucedendo integralmente o horário anterior** | `13:00/15:00` | _**201**_ | --- | **Aprovada / Permitida** |
+| **09** | Sucedendo com tempo a frente do horário anterior | `14:00/16:00` | _201_ | --- | **Aprovada / Permitida** |
 
 ---
 
 ## 💡 Outros Exemplos Comuns de Limites
 
-*   **Campos de Texto (Strings):** Se um campo de "Nome" aceita de **3 a 50 caracteres**, os testes limite devem incluir strings com exatamente 2, 3, 4, 49, 50 e 51 caracteres.
-*   **Transações Financeiras:** Se o limite de transferência diária via Pix é de **R\$ 5.000,00**, os limites são R\$ 4.999,99 (passa), R\$ 5.000,00 (passa) e R\$ 5.000,01 (bloqueia).
-*   **Carrinho de Compras:** Se um cupom dá desconto para compras *acima* de R\$ 100,00, o valor R\$ 100,00 não recebe o desconto, mas R\$ 100,01 recebe.
+*   **Nomes das Salas (String):** Por mais que os nomes das salas pareçam números, a numeração foi elaborada para que siga um padrão, como "001", "004" em diante.
+*   **Nomes de usuários:** ao cadastrar um usuário, ele deverá ter uma espécie de apelido , o qual tendo entre 8 e 24 caracteres.
 
 
 ## 📝 Licença
