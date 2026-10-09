@@ -16,7 +16,8 @@ public interface ReservaRepository extends JpaRepository<Reserva,Long> {
     @Query("""
         SELECT COUNT(r) > 0 
         FROM Reserva r 
-        WHERE r.sala.id = :salaId 
+        WHERE r.status = ATIVA
+          AND r.sala.id = :salaId 
           AND r.fim > :novoInicio   
           AND r.inicio < :novoFim   
     """)
