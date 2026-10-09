@@ -24,6 +24,7 @@ target/
 /nbbuild/
 /dist/
 /nbdist/
+.gradle/
 /.nb-gradle/
 build/
 !**/src/main/**/build/
@@ -31,3 +32,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Variáveis de Ambiente ###
+.env
